@@ -1,0 +1,92 @@
+schema_version: 0.1.0
+sequence_name: ground_to_wall_transition
+control_frequency_hz: 200
+
+safety:
+  max_roll_error_rad: TBD
+  max_pitch_error_rad: TBD
+  min_confirmed_support_feet: TBD
+  state_timeout_s: 10.0
+  on_failure: hold_and_release_to_last_safe_state
+
+states:
+  - name: approach_wall
+    target_base_pose: {x: TBD, y: TBD, z: TBD, roll: TBD, pitch: TBD, yaw: TBD}
+    joint_targets_rad: {}
+    adhesion_commands: {}
+    fold_targets_rad: {}
+    completion_condition: TBD
+    timeout_s: TBD
+    failure_state: safe_hold
+
+  - name: front_contact
+    target_base_pose: {}
+    joint_targets_rad: {}
+    adhesion_commands: {lf: off, rf: off}
+    fold_targets_rad: {}
+    completion_condition: front_contact_valid
+    timeout_s: TBD
+    failure_state: approach_wall
+
+  - name: front_adhesion_confirm
+    target_base_pose: {}
+    joint_targets_rad: {}
+    adhesion_commands: {lf: on, rf: on}
+    fold_targets_rad: {}
+    completion_condition: lf_confirmed_and_rf_confirmed
+    timeout_s: TBD
+    failure_state: approach_wall
+
+  - name: base_fold
+    target_base_pose: {}
+    joint_targets_rad: {}
+    adhesion_commands: {lf: on, rf: on}
+    fold_targets_rad: {base_fold_left: TBD, base_fold_right: TBD}
+    completion_condition: fold_targets_reached
+    timeout_s: TBD
+    failure_state: front_adhesion_confirm
+
+  - name: rear_approach
+    target_base_pose: {}
+    joint_targets_rad: {}
+    adhesion_commands: {lf: on, rf: on}
+    fold_targets_rad: {}
+    completion_condition: rear_contact_valid
+    timeout_s: TBD
+    failure_state: base_fold
+
+  - name: rear_adhesion_confirm
+    target_base_pose: {}
+    joint_targets_rad: {}
+    adhesion_commands: {lr: on, rr: on}
+    fold_targets_rad: {}
+    completion_condition: lr_confirmed_and_rr_confirmed
+    timeout_s: TBD
+    failure_state: base_fold
+
+  - name: base_unfold
+    target_base_pose: {}
+    joint_targets_rad: {}
+    adhesion_commands: {lf: on, rf: on, lr: on, rr: on}
+    fold_targets_rad: {base_fold_left: TBD, base_fold_right: TBD}
+    completion_condition: unfolded_and_pose_stable
+    timeout_s: TBD
+    failure_state: safe_hold
+
+  - name: wall_ready
+    target_base_pose: {}
+    joint_targets_rad: {}
+    adhesion_commands: {}
+    fold_targets_rad: {}
+    completion_condition: wall_controller_ready
+    timeout_s: TBD
+    failure_state: safe_hold
+
+export:
+  include_timestamps: true
+  include_joint_positions: true
+  include_joint_velocities: true
+  include_adhesion_commands: true
+  include_fold_commands: true
+  hardware_joint_mapping: {}
+

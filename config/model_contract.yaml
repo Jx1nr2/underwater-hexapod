@@ -1,0 +1,88 @@
+schema_version: 0.1.0
+project: underwater_hexapod
+units:
+  length: m
+  angle: rad
+  mass: kg
+  force: N
+  torque: N_m
+
+frames:
+  convention: right_handed
+  base_link:
+    x: forward
+    y: left
+    z: up
+  world:
+    z: up
+
+robot:
+  total_mass_kg: TBD
+  nominal_body_height_m: TBD
+  buoyancy_center_in_base_m: [TBD, TBD, TBD]
+  center_of_mass_in_base_m: [TBD, TBD, TBD]
+
+base_fold:
+  mechanism_description: TBD
+  joints:
+    - name: base_fold_left
+      axis_in_parent: [TBD, TBD, TBD]
+      range_rad: [TBD, TBD]
+      max_velocity_rad_s: TBD
+      max_torque_N_m: TBD
+    - name: base_fold_right
+      axis_in_parent: [TBD, TBD, TBD]
+      range_rad: [TBD, TBD]
+      max_velocity_rad_s: TBD
+      max_torque_N_m: TBD
+
+legs:
+  names: [lf, lm, lr, rf, rm, rr]
+  dof_per_leg: 3
+  joint_template:
+    - suffix: j1
+      type: hinge
+      axis_in_parent: [TBD, TBD, TBD]
+      range_rad: [TBD, TBD]
+      zero_definition: TBD
+      max_velocity_rad_s: TBD
+      max_torque_N_m: TBD
+    - suffix: j2
+      type: hinge
+      axis_in_parent: [TBD, TBD, TBD]
+      range_rad: [TBD, TBD]
+      zero_definition: TBD
+      max_velocity_rad_s: TBD
+      max_torque_N_m: TBD
+    - suffix: j3
+      type: hinge
+      axis_in_parent: [TBD, TBD, TBD]
+      range_rad: [TBD, TBD]
+      zero_definition: TBD
+      max_velocity_rad_s: TBD
+      max_torque_N_m: TBD
+  geometry:
+    link_lengths_m: [TBD, TBD, TBD]
+    mesh_scale: [1.0, 1.0, 1.0]
+
+adhesion:
+  technology: TBD
+  command_values: [off, on]
+  normal_force_limit_N: TBD
+  tangential_force_limit_N: TBD
+  engage_delay_s: TBD
+  release_delay_s: TBD
+  max_contact_gap_m: TBD
+  max_surface_angle_rad: TBD
+  failure_behavior: TBD
+
+environment_assumptions:
+  ground_friction: TBD
+  wall_friction: TBD
+  fluid_model: disabled_in_stage_1
+
+ownership:
+  mechanical_fields_owner: mechanical_team
+  control_fields_owner: intelligence_team
+  interface_approval: both_teams
+
