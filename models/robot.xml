@@ -1,0 +1,146 @@
+<mujoco model="underwater_hexapod">
+  <compiler angle="radian"/>
+  <option timestep="0.002" gravity="0 0 -9.81" integrator="implicitfast"/>
+  <statistic center="-0.08 0 0.18" extent="0.65"/>
+
+  <visual>
+    <headlight diffuse="0.7 0.7 0.7" ambient="0.3 0.3 0.3" specular="0 0 0"/>
+  </visual>
+
+  <default>
+    <joint type="hinge" limited="true" damping="0.8" armature="0.02"/>
+    <geom friction="0.9 0.02 0.001" condim="4"/>
+    <velocity ctrllimited="true" ctrlrange="-1 1" kv="8"/>
+  </default>
+
+  <worldbody>
+    <light pos="0 0 2" dir="0 0 -1" directional="true"/>
+    <geom name="ground" type="plane" size="2 2 0.01" rgba="0.45 0.45 0.45 1"/>
+
+    <!-- The front plate is the floating base and carries two pairs of legs. -->
+    <body name="base_link" pos="0 0 0.35">
+      <freejoint name="base_free"/>
+      <geom name="front_plate" type="box" size="0.16 0.12 0.025" mass="1" rgba="0.20 0.55 0.75 1"/>
+
+      <body name="lf_upper" pos="0.12 0.12 0">
+        <joint name="lf_j1" axis="0 1 0" range="-1.57 1.57"/>
+        <geom name="lf_upper_geom" type="capsule" fromto="0 0 0 0 0 -0.14" size="0.018" mass="1"/>
+        <body name="lf_lower" pos="0 0 -0.14">
+          <joint name="lf_j2" axis="0 1 0" range="-1.57 1.57"/>
+          <geom name="lf_lower_geom" type="capsule" fromto="0 0 0 0 0 -0.145" size="0.016" mass="1"/>
+          <body name="lf_foot" pos="0 0 -0.16">
+            <geom name="lf_foot_pad" type="cylinder" size="0.035 0.008" pos="0 0 -0.008" mass="1" rgba="0.75 0.25 0.20 1"/>
+            <site name="lf_foot_site" type="cylinder" size="0.038 0.003" pos="0 0 -0.016" rgba="1 0 0 0.35"/>
+          </body>
+        </body>
+      </body>
+
+      <body name="rf_upper" pos="0.12 -0.12 0">
+        <joint name="rf_j1" axis="0 1 0" range="-1.57 1.57"/>
+        <geom name="rf_upper_geom" type="capsule" fromto="0 0 0 0 0 -0.14" size="0.018" mass="1"/>
+        <body name="rf_lower" pos="0 0 -0.14">
+          <joint name="rf_j2" axis="0 1 0" range="-1.57 1.57"/>
+          <geom name="rf_lower_geom" type="capsule" fromto="0 0 0 0 0 -0.145" size="0.016" mass="1"/>
+          <body name="rf_foot" pos="0 0 -0.16">
+            <geom name="rf_foot_pad" type="cylinder" size="0.035 0.008" pos="0 0 -0.008" mass="1" rgba="0.75 0.25 0.20 1"/>
+            <site name="rf_foot_site" type="cylinder" size="0.038 0.003" pos="0 0 -0.016" rgba="1 0 0 0.35"/>
+          </body>
+        </body>
+      </body>
+
+      <!-- The middle pair is also mounted on the front plate. -->
+      <body name="lm_upper" pos="-0.10 0.12 0">
+        <joint name="lm_j1" axis="0 1 0" range="-1.57 1.57"/>
+        <geom name="lm_upper_geom" type="capsule" fromto="0 0 0 0 0 -0.14" size="0.018" mass="1"/>
+        <body name="lm_lower" pos="0 0 -0.14">
+          <joint name="lm_j2" axis="0 1 0" range="-1.57 1.57"/>
+          <geom name="lm_lower_geom" type="capsule" fromto="0 0 0 0 0 -0.145" size="0.016" mass="1"/>
+          <body name="lm_foot" pos="0 0 -0.16">
+            <geom name="lm_foot_pad" type="cylinder" size="0.035 0.008" pos="0 0 -0.008" mass="1" rgba="0.75 0.25 0.20 1"/>
+            <site name="lm_foot_site" type="cylinder" size="0.038 0.003" pos="0 0 -0.016" rgba="1 0 0 0.35"/>
+          </body>
+        </body>
+      </body>
+
+      <body name="rm_upper" pos="-0.10 -0.12 0">
+        <joint name="rm_j1" axis="0 1 0" range="-1.57 1.57"/>
+        <geom name="rm_upper_geom" type="capsule" fromto="0 0 0 0 0 -0.14" size="0.018" mass="1"/>
+        <body name="rm_lower" pos="0 0 -0.14">
+          <joint name="rm_j2" axis="0 1 0" range="-1.57 1.57"/>
+          <geom name="rm_lower_geom" type="capsule" fromto="0 0 0 0 0 -0.145" size="0.016" mass="1"/>
+          <body name="rm_foot" pos="0 0 -0.16">
+            <geom name="rm_foot_pad" type="cylinder" size="0.035 0.008" pos="0 0 -0.008" mass="1" rgba="0.75 0.25 0.20 1"/>
+            <site name="rm_foot_site" type="cylinder" size="0.038 0.003" pos="0 0 -0.016" rgba="1 0 0 0.35"/>
+          </body>
+        </body>
+      </body>
+
+      <!-- Positive rotation lifts the rear plate toward +Z, opposite the legs. -->
+      <body name="rear_plate_link" pos="-0.16 0 0">
+        <joint name="base_fold" axis="0 1 0" range="0 1.5708"/>
+        <geom name="rear_plate" type="box" size="0.10 0.12 0.025" pos="-0.10 0 0" mass="1" rgba="0.25 0.65 0.80 1"/>
+
+        <body name="lr_upper" pos="-0.15 0.12 0">
+          <joint name="lr_j1" axis="0 1 0" range="-1.57 1.57"/>
+          <geom name="lr_upper_geom" type="capsule" fromto="0 0 0 0 0 -0.14" size="0.018" mass="1"/>
+          <body name="lr_lower" pos="0 0 -0.14">
+            <joint name="lr_j2" axis="0 1 0" range="-1.57 1.57"/>
+            <geom name="lr_lower_geom" type="capsule" fromto="0 0 0 0 0 -0.145" size="0.016" mass="1"/>
+            <body name="lr_foot" pos="0 0 -0.16">
+              <geom name="lr_foot_pad" type="cylinder" size="0.035 0.008" pos="0 0 -0.008" mass="1" rgba="0.75 0.25 0.20 1"/>
+              <site name="lr_foot_site" type="cylinder" size="0.038 0.003" pos="0 0 -0.016" rgba="1 0 0 0.35"/>
+            </body>
+          </body>
+        </body>
+
+        <body name="rr_upper" pos="-0.15 -0.12 0">
+          <joint name="rr_j1" axis="0 1 0" range="-1.57 1.57"/>
+          <geom name="rr_upper_geom" type="capsule" fromto="0 0 0 0 0 -0.14" size="0.018" mass="1"/>
+          <body name="rr_lower" pos="0 0 -0.14">
+            <joint name="rr_j2" axis="0 1 0" range="-1.57 1.57"/>
+            <geom name="rr_lower_geom" type="capsule" fromto="0 0 0 0 0 -0.145" size="0.016" mass="1"/>
+            <body name="rr_foot" pos="0 0 -0.16">
+              <geom name="rr_foot_pad" type="cylinder" size="0.035 0.008" pos="0 0 -0.008" mass="1" rgba="0.75 0.25 0.20 1"/>
+              <site name="rr_foot_site" type="cylinder" size="0.038 0.003" pos="0 0 -0.016" rgba="1 0 0 0.35"/>
+            </body>
+          </body>
+        </body>
+      </body>
+    </body>
+  </worldbody>
+
+  <!-- Joint commands are target velocities in rad/s, limited to [-1, 1]. -->
+  <actuator>
+    <velocity name="base_fold" joint="base_fold"/>
+    <velocity name="lf_j1" joint="lf_j1"/>
+    <velocity name="lf_j2" joint="lf_j2"/>
+    <velocity name="lm_j1" joint="lm_j1"/>
+    <velocity name="lm_j2" joint="lm_j2"/>
+    <velocity name="rf_j1" joint="rf_j1"/>
+    <velocity name="rf_j2" joint="rf_j2"/>
+    <velocity name="rm_j1" joint="rm_j1"/>
+    <velocity name="rm_j2" joint="rm_j2"/>
+    <velocity name="lr_j1" joint="lr_j1"/>
+    <velocity name="lr_j2" joint="lr_j2"/>
+    <velocity name="rr_j1" joint="rr_j1"/>
+    <velocity name="rr_j2" joint="rr_j2"/>
+
+    <!-- 0 = released, 1 = electromagnetic adhesion enabled. -->
+    <adhesion name="lf_adhesion" body="lf_foot" gain="20" ctrlrange="0 1"/>
+    <adhesion name="lm_adhesion" body="lm_foot" gain="20" ctrlrange="0 1"/>
+    <adhesion name="lr_adhesion" body="lr_foot" gain="20" ctrlrange="0 1"/>
+    <adhesion name="rf_adhesion" body="rf_foot" gain="20" ctrlrange="0 1"/>
+    <adhesion name="rm_adhesion" body="rm_foot" gain="20" ctrlrange="0 1"/>
+    <adhesion name="rr_adhesion" body="rr_foot" gain="20" ctrlrange="0 1"/>
+  </actuator>
+
+  <sensor>
+    <touch name="lf_contact" site="lf_foot_site"/>
+    <touch name="lm_contact" site="lm_foot_site"/>
+    <touch name="lr_contact" site="lr_foot_site"/>
+    <touch name="rf_contact" site="rf_foot_site"/>
+    <touch name="rm_contact" site="rm_foot_site"/>
+    <touch name="rr_contact" site="rr_foot_site"/>
+  </sensor>
+</mujoco>
+

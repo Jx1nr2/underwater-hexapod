@@ -20,6 +20,42 @@
 - [任务看板](PROJECT_BOARD.md)
 - [决策记录](docs/decisions/0001_scope_and_conventions.md)
 
+## 交互式测试
+
+启动键盘控制的 MuJoCo 可视化窗口：
+
+```powershell
+python src/interactive_viewer.py
+```
+
+按 `1`～`6` 选择一条腿，`W/S` 控制第一关节，`E/D` 控制第二关节，
+方向键上/下控制躯体折叠，`F` 切换当前足端吸附，`A` 切换全部吸附，
+空格停止全部关节，`R` 重置，`H` 显示帮助，`Esc` 退出。
+
+同一模型可作为 Gymnasium 环境使用：
+
+```python
+from src.envs import UnderwaterHexapodEnv
+
+env = UnderwaterHexapodEnv()
+observation, info = env.reset()
+observation, reward, terminated, truncated, info = env.step(env.action_space.sample())
+env.close()
+```
+
+动作向量共 19 维：前 13 维是 `[-1, 1] rad/s` 的关节速度，后 6 维是
+`[0, 1]` 的足端电磁吸附开关。当前基础环境返回中性奖励 `0.0`，训练任务可通过
+继承环境并定义奖励函数扩展。
+
+辅助诊断脚本位于 `tools/diagnostics/`，正式自动测试位于 `tests/`。
+
+## 当前实现边界
+
+- 已实现两板式躯体、单折叠关节、六条两自由度机械腿和理想化足端电磁吸附接口。
+- 当前场景只包含地面，尚未加入墙面、水动力、浮力和扰动。
+- Gymnasium 环境当前返回中性奖励，需要为具体行走或爬墙任务另行定义奖励函数。
+- `--stand` 使用的是待验证的初始站立候选姿态，不能替代正式步态或稳定性验收。
+
 ## 推荐目录
 
 ```text
@@ -47,4 +83,3 @@ runs/                   本地仿真输出（默认不提交大文件）
 3. 双方联合完成 M0 模型接口评审。
 4. 智能院实现关节位置控制、站立姿态和运行日志。
 5. 双方按 M1 验收标准录制同一版本的仿真结果。
-

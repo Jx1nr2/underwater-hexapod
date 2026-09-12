@@ -41,7 +41,7 @@ states:
     target_base_pose: {}
     joint_targets_rad: {}
     adhesion_commands: {lf: on, rf: on}
-    fold_targets_rad: {base_fold_left: TBD, base_fold_right: TBD}
+    fold_targets_rad: {base_fold: 1.5708}
     completion_condition: fold_targets_reached
     timeout_s: TBD
     failure_state: front_adhesion_confirm
@@ -68,7 +68,7 @@ states:
     target_base_pose: {}
     joint_targets_rad: {}
     adhesion_commands: {lf: on, rf: on, lr: on, rr: on}
-    fold_targets_rad: {base_fold_left: TBD, base_fold_right: TBD}
+    fold_targets_rad: {base_fold: 0.0}
     completion_condition: unfolded_and_pose_stable
     timeout_s: TBD
     failure_state: safe_hold

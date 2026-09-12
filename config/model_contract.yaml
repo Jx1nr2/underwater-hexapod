@@ -17,58 +17,51 @@ frames:
     z: up
 
 robot:
-  total_mass_kg: TBD
-  nominal_body_height_m: TBD
+  mass_policy: unit_mass_per_rigid_component
+  component_mass_kg: 1.0
+  total_mass_kg: 20.0
+  nominal_body_height_m: 0.35
   buoyancy_center_in_base_m: [TBD, TBD, TBD]
   center_of_mass_in_base_m: [TBD, TBD, TBD]
 
 base_fold:
-  mechanism_description: TBD
+  mechanism_description: rear plate folds upward 90 degrees, opposite to the downward-pointing legs
   joints:
-    - name: base_fold_left
-      axis_in_parent: [TBD, TBD, TBD]
-      range_rad: [TBD, TBD]
-      max_velocity_rad_s: TBD
-      max_torque_N_m: TBD
-    - name: base_fold_right
-      axis_in_parent: [TBD, TBD, TBD]
-      range_rad: [TBD, TBD]
-      max_velocity_rad_s: TBD
+    - name: base_fold
+      axis_in_parent: [0.0, 1.0, 0.0]
+      range_rad: [0.0, 1.5708]
+      velocity_command_range_rad_s: [-1.0, 1.0]
       max_torque_N_m: TBD
 
 legs:
   names: [lf, lm, lr, rf, rm, rr]
-  dof_per_leg: 3
+  mounting:
+    front_plate_pairs: [front, middle]
+    rear_plate_pairs: [rear]
+  dof_per_leg: 2
   joint_template:
     - suffix: j1
       type: hinge
-      axis_in_parent: [TBD, TBD, TBD]
-      range_rad: [TBD, TBD]
-      zero_definition: TBD
-      max_velocity_rad_s: TBD
+      axis_in_parent: [0.0, 1.0, 0.0]
+      range_rad: [-1.57, 1.57]
+      zero_definition: upper link points down
+      velocity_command_range_rad_s: [-1.0, 1.0]
       max_torque_N_m: TBD
     - suffix: j2
       type: hinge
-      axis_in_parent: [TBD, TBD, TBD]
-      range_rad: [TBD, TBD]
-      zero_definition: TBD
-      max_velocity_rad_s: TBD
-      max_torque_N_m: TBD
-    - suffix: j3
-      type: hinge
-      axis_in_parent: [TBD, TBD, TBD]
-      range_rad: [TBD, TBD]
-      zero_definition: TBD
-      max_velocity_rad_s: TBD
+      axis_in_parent: [0.0, 1.0, 0.0]
+      range_rad: [-1.57, 1.57]
+      zero_definition: lower link is collinear with upper link and points down
+      velocity_command_range_rad_s: [-1.0, 1.0]
       max_torque_N_m: TBD
   geometry:
-    link_lengths_m: [TBD, TBD, TBD]
+    link_lengths_m: [0.14, 0.16]
     mesh_scale: [1.0, 1.0, 1.0]
 
 adhesion:
-  technology: TBD
+  technology: electromagnetic_switch
   command_values: [off, on]
-  normal_force_limit_N: TBD
+  normal_force_limit_N: 20.0
   tangential_force_limit_N: TBD
   engage_delay_s: TBD
   release_delay_s: TBD

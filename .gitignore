@@ -8,4 +8,5 @@ runs/*
 *.mp4
 *.mkv
 *.log
+MUJOCO_LOG.TXT
 ~$*.docx
